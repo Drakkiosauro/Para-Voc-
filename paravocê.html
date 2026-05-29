@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Para você</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a12;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 480;
+            letter-spacing: -0.02em;
+            background: linear-gradient(110deg, #f5a9b8, #b77de8, #f5a9b8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #7a6a8a;
+            font-weight: 350;
+            max-width: 460px;
+        }
+
+        .hero-decoration {
+            width: 45px;
+            height: 2px;
+            background: #b77de8;
+            margin: 1rem auto;
+        }
+
+        .text-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .text-card {
+            background: rgba(15, 12, 25, 0.6);
+            border-radius: 2rem;
+            padding: 2rem 2rem;
+            border: 0.5px solid rgba(183, 125, 232, 0.2);
+            backdrop-filter: blur(4px);
+        }
+
+        .text-card p {
+            color: #ccc2e0;
+            font-size: 1rem;
+            line-height: 1.65;
+            font-weight: 350;
+        }
+
+        .photo-wall {
+            margin: 5rem 0;
+        }
+
+        .photo-wall__title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #5e4b74;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .photo-frame {
+            background: #10101a;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 28px -8px rgba(183, 125, 232, 0.3);
+        }
+
+        .photo-frame:hover img {
+            transform: scale(1.03);
+        }
+
+        .heart-canvas {
+            text-align: center;
+            margin: 5rem 0 2.5rem;
+        }
+
+        .heart-canvas__label {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #5e4b74;
+            text-transform: uppercase;
+        }
+
+        .heart-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            max-width: 540px;
+            margin: 1.8rem auto;
+        }
+
+        .heart-piece {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 14px;
+            filter: brightness(0.96) contrast(1.05);
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid rgba(183, 125, 232, 0.2);
+        }
+
+        .heart-piece:hover {
+            transform: scale(1.08);
+            filter: brightness(1.05);
+            border-color: #f5a9b8;
+        }
+
+        .final-core {
+            background: linear-gradient(125deg, rgba(25, 20, 40, 0.7), rgba(18, 14, 32, 0.8));
+            border-radius: 3rem;
+            padding: 2.8rem 2rem;
+            text-align: center;
+            margin: 4rem 0 2rem;
+            border: 0.5px solid rgba(245, 169, 184, 0.25);
+            backdrop-filter: blur(8px);
+        }
+
+        .final-core h2 {
+            font-size: 2.2rem;
+            font-weight: 460;
+            letter-spacing: -0.3px;
+            background: linear-gradient(125deg, #f0a0b4, #cb9eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.6rem;
+        }
+
+        .final-core .subnote {
+            font-size: 0.95rem;
+            color: #9a86b0;
+            margin-top: 0.5rem;
+        }
+
+        .tiny-footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            color: #3f2e58;
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: #1c162e;
+            border: 1px solid #5e4b74;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            color: #c9b0f0;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.2s;
+            backdrop-filter: blur(10px);
+        }
+
+        .scroll-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.8rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .heart-grid-layout {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+            }
+            .final-core h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,350;14..32,400;14..32,460;14..32,500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="hero">
+        <h1>Você transforma<br>o comum em poema.</h1>
+        <div class="hero-decoration"></div>
+        <p>Cada detalhe teu é um lugar onde eu quero morar.</p>
+    </div>
+
+    <div class="text-grid">
+        <div class="text-card">
+            <p>Não é sobre dias perfeitos. É sobre o jeito que teu olhar desacelera o tempo. Sobre o som da tua risada quando a gente divide qualquer besteira. Sobre a maneira calma que você tem de me lembrar que o amor não precisa de motivo.</p>
+        </div>
+        <div class="text-card">
+            <p>Eu amo a forma como você existe. Sem pressa, sem máscara. E é por isso que cada versão minha te escolhe — não por acaso, mas por encaixe.</p>
+        </div>
+    </div>
+
+    <div class="photo-wall">
+        <div class="photo-wall__title">⎯ fragmentos nossos ⎯</div>
+        <div class="photo-grid" id="imageMasonry"></div>
+    </div>
+
+    <div class="heart-canvas">
+        <div class="heart-canvas__label">⎯ o coração que você ganhou ⎯</div>
+        <div class="heart-grid-layout" id="dynamicHeart"></div>
+    </div>
+
+    <div class="final-core">
+        <h2>Eu te amo para todo o sempre</h2>
+        <div class="subnote">Não é frase. É compromisso que o tempo só fortalece.</div>
+    </div>
+
+    <div class="tiny-footer">
+        Silenciosamente teu, para sempre.
+    </div>
+</div>
+
+<button class="scroll-top-btn" id="scrollTop">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const imageSources = [
+        "https://picsum.photos/id/64/280/280",
+        "https://picsum.photos/id/42/280/280",
+        "https://picsum.photos/id/20/280/280",
+        "https://picsum.photos/id/26/280/280",
+        "https://picsum.photos/id/28/280/280",
+        "https://picsum.photos/id/58/280/280",
+        "https://picsum.photos/id/96/280/280",
+        "https://picsum.photos/id/169/280/280",
+        "https://picsum.photos/id/155/280/280"
+    ];
+
+    function renderPhotoGrid() {
+        const gridContainer = document.getElementById('imageMasonry');
+        if (!gridContainer) return;
+        gridContainer.innerHTML = '';
+        imageSources.forEach((imgUrl, idx) => {
+            const frame = document.createElement('div');
+            frame.className = 'photo-frame';
+            const imgElem = document.createElement('img');
+            imgElem.src = imgUrl;
+            imgElem.alt = `memoria ${idx + 1}`;
+            frame.appendChild(imgElem);
+            frame.addEventListener('click', () => window.open(imgUrl, '_blank'));
+            gridContainer.appendChild(frame);
+        });
+    }
+
+    function getHeartMatrix() {
+        return [
+            [0, 1, 0, 0, 0, 1, 0],
+            [1, 1, 1, 0, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [0, 1, 1, 1, 1, 1, 0],
+            [0, 0, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0]
+        ];
+    }
+
+    function buildHeartFromImages() {
+        const heartZone = document.getElementById('dynamicHeart');
+        if (!heartZone) return;
+        const pattern = getHeartMatrix();
+        let neededCount = 0;
+        pattern.forEach(row => {
+            row.forEach(cell => { if (cell === 1) neededCount++; });
+        });
+
+        let imageLoop = [];
+        while (imageLoop.length < neededCount) {
+            imageLoop.push(...imageSources);
+        }
+        imageLoop = imageLoop.slice(0, neededCount);
+
+        heartZone.innerHTML = '';
+        let imageIdx = 0;
+        for (let i = 0; i < pattern.length; i++) {
+            for (let j = 0; j < pattern[i].length; j++) {
+                if (pattern[i][j] === 1) {
+                    const heartImg = document.createElement('img');
+                    heartImg.src = imageLoop[imageIdx % imageLoop.length];
+                    heartImg.classList.add('heart-piece');
+                    heartImg.style.opacity = '0';
+                    heartImg.style.transform = 'scale(0.9)';
+                    heartImg.addEventListener('click', () => window.open(heartImg.src, '_blank'));
+                    heartZone.appendChild(heartImg);
+                    imageIdx++;
+                } else {
+                    const blank = document.createElement('div');
+                    blank.style.visibility = 'hidden';
+                    blank.style.aspectRatio = '1';
+                    heartZone.appendChild(blank);
+                }
+            }
+        }
+
+        const allHeartTiles = document.querySelectorAll('.heart-piece');
+        allHeartTiles.forEach((tile, index) => {
+            gsap.to(tile, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.45,
+                delay: index * 0.008,
+                ease: "back.out(0.4)"
+            });
+        });
+    }
+
+    function initEntryAnimations() {
+        const heroTitle = document.querySelector('.hero h1');
+        const heroLine = document.querySelector('.hero-decoration');
+        const heroSub = document.querySelector('.hero p');
+        if (heroTitle) {
+            gsap.fromTo(heroTitle, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: "power2.out" });
+            gsap.fromTo(heroLine, { width: 0, opacity: 0 }, { width: 45, opacity: 1, duration: 0.9, delay: 0.2 });
+            gsap.fromTo(heroSub, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.35 });
+        }
+
+        const textCards = document.querySelectorAll('.text-card');
+        textCards.forEach((card, idx) => {
+            gsap.fromTo(card, 
+                { opacity: 0, y: 35, filter: "blur(2px)" },
+                {
+                    opacity: 1,
+                    y: 0,
+                    filter: "blur(0px)",
+                    duration: 0.8,
+                    delay: idx * 0.12,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 87%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        const photoFrames = document.querySelectorAll('.photo-frame');
+        photoFrames.forEach((frame, i) => {
+            gsap.fromTo(frame,
+                { opacity: 0, scale: 0.94, y: 25 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 0.55,
+                    delay: i * 0.06,
+                    scrollTrigger: {
+                        trigger: frame,
+                        start: "top 88%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        const heartLabel = document.querySelector('.heart-canvas__label');
+        if (heartLabel) {
+            gsap.fromTo(heartLabel,
+                { opacity: 0, letterSpacing: "0px" },
+                {
+                    opacity: 1,
+                    letterSpacing: "3px",
+                    duration: 0.7,
+                    scrollTrigger: {
+                        trigger: '.heart-canvas',
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        }
+
+        const finalElement = document.querySelector('.final-core');
+        if (finalElement) {
+            gsap.fromTo(finalElement,
+                { opacity: 0, y: 35, scale: 0.97 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.95,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: finalElement,
+                        start: "top 82%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        }
+    }
+
+    function gentleBreathing() {
+        gsap.to(".hero h1", {
+            y: 6,
+            duration: 2.8,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+        gsap.to(".hero-decoration", {
+            width: 58,
+            duration: 2.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+    }
+
+    const scrollBtnRef = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 260) {
+            scrollBtnRef.classList.add('show');
+        } else {
+            scrollBtnRef.classList.remove('show');
+        }
+    });
+    scrollBtnRef.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('load', () => {
+        renderPhotoGrid();
+        buildHeartFromImages();
+        initEntryAnimations();
+        gentleBreathing();
+        ScrollTrigger.refresh();
+    });
+
+    window.addEventListener('resize', () => {
+        setTimeout(() => {
+            buildHeartFromImages();
+            ScrollTrigger.refresh();
+        }, 150);
+    });
+</script>
+</body>
+</html>
